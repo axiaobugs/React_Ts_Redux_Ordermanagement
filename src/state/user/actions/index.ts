@@ -16,6 +16,9 @@ interface UserFetchErrorAction{
     payload:string;
 }
 
+interface UserLogoutAction{
+    type:UserActionType.USER_LOGOUT
+}
 
 interface UserCurrentRequestAction{
     type:UserActionType.USER_CURRENT_REQUEST;
@@ -36,4 +39,5 @@ export type Action = UserFetchAction
                     |UserFetchErrorAction
                     |UserCurrentRequestAction
                     |UserCurrentInfoAction
-                    |UserCurrentErrorAction;
+                    |UserCurrentErrorAction
+                    |UserLogoutAction;

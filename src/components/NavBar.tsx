@@ -1,7 +1,7 @@
 import React, { useState,useEffect} from 'react'
-import { Button, Dropdown, Form, FormControl, Modal, Nav, Navbar, NavDropdown, Toast} from 'react-bootstrap'
+import { Button, Dropdown, DropdownButton, Form, FormControl, Modal, Nav, Navbar, NavDropdown, Toast} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignInAlt,faUserPlus,faAddressBook,faFile,faToolbox} from '@fortawesome/free-solid-svg-icons'
+import { faSignInAlt,faUserPlus,faAddressBook,faFile,faToolbox, faUser} from '@fortawesome/free-solid-svg-icons'
 import ILogin from '../data/user/userModel'
 import { useActions } from '../hooks/useActions'
 import { useTypeSelector } from '../hooks/userTyprSelector'
@@ -18,7 +18,7 @@ const NavBar = () => {
     //#endregion
 
     //#region set redux hooks
-    const {login} = useActions();
+    const {login,logout} = useActions();
     const {data,error,loading}=useTypeSelector((state)=>state.userState)
     //#endregion
 
@@ -26,9 +26,9 @@ const NavBar = () => {
     const hrNavTitle = (<span>HR<FontAwesomeIcon className="ms-2" icon={faAddressBook}/></span>)
     const orderNavTitle = (<span>Order<FontAwesomeIcon className="ms-2" icon={faFile}/></span>)
     const toBeAddingNavTitle = (<span>To Be Adding<FontAwesomeIcon className="ms-2" icon={faToolbox}/></span>)
+    const userIcon = (<FontAwesomeIcon className="ms-2" icon={faToolbox}/>)
     //#endregion
    
-    //TODO: 判断用户是否登录,如果登录显示用户信息在NavBar,否则显示登录,注册选项在NavBar
     //#region set functions
     const LoginSubmit=()=>{
         localStorage.removeItem('token')
@@ -53,12 +53,12 @@ const NavBar = () => {
     return (
         <div>
             <Navbar bg="dark" variant="dark" expand="lg" >
-                <Navbar.Brand href="#home" >Order Management</Navbar.Brand>
+                <Navbar.Brand href="#home" className="ms-5">Order Management</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
+                    {/* start of dropdown select on the Navbar */}
                     <Nav className="ms-5 me-auto">
                         <NavDropdown className="ms-3 me-auto" title={hrNavTitle} id="basic-nav-dropdown">
-                            
                             <NavDropdown.Item href="#action/3.1">Department</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Employee</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
@@ -76,6 +76,9 @@ const NavBar = () => {
                             <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
+                    {/* end of dropdown select on the Navbar */}
+
+                    {/* start of Search from */}
                     <Form  className="d-flex me-5 ms-5">
                         <Dropdown className="me-2">
                             <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -87,15 +90,31 @@ const NavBar = () => {
                                 <Dropdown.Item  onClick={()=>{setSearchTitle("User Name")}}>User Name</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                              
-                            
-                        
                         <FormControl type="text" placeholder="Search" className="me-sm-2" />
                         <Button variant="outline-success">Search</Button>
                     </Form>
+                    {/* End of dropdown select on the Navbar */}
+
+
                     {data?(
                         <span className="text-light align-middle me-5">
-                            Welcom <a href="/user" className="text-light text-decoration-none">{data.username.toUpperCase()}</a>
+                            Welcom 
+                            
+                            <DropdownButton 
+                            id="dropdown-item-button" 
+                            title={<span>{data.username}<FontAwesomeIcon className="ms-2" icon={faUser}/></span>}
+                            className="ms-2 me-5 rounded-circle "
+                            as='image'
+                            >
+
+                                <Dropdown.Item >Info</Dropdown.Item>
+                                <Dropdown.Item >Account</Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item 
+                                className="bg-secondary text-light"
+                                onClick={() =>logout()}
+                                >Logout</Dropdown.Item>
+                            </DropdownButton> 
                         </span>
                     ):(
                         <>
@@ -107,6 +126,7 @@ const NavBar = () => {
                     
                 </Navbar.Collapse>
             </Navbar>
+            {/* start of Login Modal */}
             <Modal show={loginModal} onHide={()=>setLoginModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Login</Modal.Title>
@@ -134,6 +154,9 @@ const NavBar = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            {/* End of Login Modal */}
+
+            {/* start of Login Result Toast */}
             <ToastContainer position="bottom-center">
                 <Toast delay={2000} autohide onClose={() => setShowToast(false)} show={showToast} className="bg-success">
                     <Toast.Header closeButton={false}>
@@ -151,7 +174,7 @@ const NavBar = () => {
                     <Toast.Body>{error}</Toast.Body>
                 </Toast> 
             </ToastContainer>                
-             
+            {/* End of Login Result Toast */} 
 
         </div>
     )

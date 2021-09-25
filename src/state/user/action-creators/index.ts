@@ -28,6 +28,7 @@ export const login=(loginUser:ILogin):ThunkAction<Promise<void>,RootState,unknow
 
 export const logout=():ThunkAction<Promise<void>,RootState,unknown,AnyAction>=>
     async (dispatch:ThunkDispatch<RootState,unknown,AnyAction>):Promise<void> =>{
+        localStorage.removeItem('token')
         dispatch({
             type:UserActionType.USER_LOGOUT
         })       
