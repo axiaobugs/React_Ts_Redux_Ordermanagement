@@ -23,6 +23,12 @@ const userReducer = (state:IUserState=initialState,action:Action):IUserState => 
             return {loading:false,data:action.payload}
         case UserActionType.USER_LOGIN_ERROR:
             return {loading:false,error:action.payload}
+        case UserActionType.USER_CURRENT_REQUEST:
+            return {loading:true}
+        case UserActionType.USER_CURRENT_INFO:
+            return {loading:false,data:action.payload}
+        case UserActionType.USER_CURRENT_ERROR:
+            return {loading:false,error:action.payload}
         default:
             return state;
     }

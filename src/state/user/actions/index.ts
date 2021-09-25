@@ -16,4 +16,24 @@ interface UserFetchErrorAction{
     payload:string;
 }
 
-export type Action = UserFetchAction|UserFetchSuccessAction|UserFetchErrorAction;
+
+interface UserCurrentRequestAction{
+    type:UserActionType.USER_CURRENT_REQUEST;
+}
+
+interface UserCurrentInfoAction{
+    type:UserActionType.USER_CURRENT_INFO;
+    payload:IResponseUser;
+}
+
+interface UserCurrentErrorAction{
+    type:UserActionType.USER_CURRENT_ERROR;
+    payload:string;
+}
+
+export type Action = UserFetchAction
+                    |UserFetchSuccessAction
+                    |UserFetchErrorAction
+                    |UserCurrentRequestAction
+                    |UserCurrentInfoAction
+                    |UserCurrentErrorAction;
